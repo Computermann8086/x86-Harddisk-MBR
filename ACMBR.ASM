@@ -2,7 +2,9 @@
 ;    AC-DOS Master Boot Record     ;
 ;  Written by Christian Henrichsen ;
 ;            12.03.2024            ;
-; Copyright (C) Artcomp Corp. 2024 ;
+;           Copyright (C)          ;
+;       Christian Henrichsen       ;
+;               2024               ; 
 ;----------------------------------;
 
 org 600h      ; Program origin of 600h
@@ -82,23 +84,22 @@ bootable:                ; Yez, it's bootable
 ;----------------
 ; MBR subroutines
 
-print_string:
-	mov ah, 0Eh			; int 10h teletype function
-.repeat:
-	lodsb				; Get char from string
-	cmp al, 0
-	je .done			; If char is zero, end of string
-
-	int 10h				; Otherwise, print it
-	jmp short .repeat	; And move on to next char
-
-.done:
-	jmp short $         ; Hang the machine, you must power down or reboot
-
 invalid_tbl:             ; The partition table is invalid
     mov si, invalid_partbl ; Location of error message
-    call print_string    ; call print_string procedure
-                         ; Lock up machine. You must power down or reboot
+
+print_string:
+	mov ah, 0Eh	 ; int 10h teletype function
+.repeat:
+	lodsb		 ; Get character from our string
+	cmp al, 0        ; Is it zero?
+	je .done	 ; If it's zero, the it's the end of the string
+
+	int 10h		 ; Otherwise, print it
+	jmp short .repeat ; And move on to next character
+
+.done:
+	jmp short $      ; Hang the machine, you must power down or reboot
+
 
 
 invalid_partbl db 'Invalid Partition Table!', 0
