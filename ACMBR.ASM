@@ -114,7 +114,7 @@ Par_tbl:
 times 16*4 db 00h ; Filling the entire Partition Table with zeros 
 db 055h, 0AAh     ; Boot signature, MUST NOT BE ALTERED
 ;-----------------------------------------------;
-;                 End Of MBR                    ;
+;                End Of My MBR                  ;
 ;-----------------------------------------------;
 
 times 1048576*40 db 0 ; Filling up with 40 Megabytes of zero's to make it a full harddisk image. OPTIONAL
