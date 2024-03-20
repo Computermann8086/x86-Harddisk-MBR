@@ -1,5 +1,5 @@
 ;----------------------------------;
-;    AC-DOS Master Boot Record     ;
+;        Master Boot Record        ;
 ;  Written by Christian Henrichsen ;
 ;            12.03.2024            ;
 ;           Copyright (C)          ;
