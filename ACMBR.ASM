@@ -7,24 +7,24 @@
 ;               2024               ; 
 ;----------------------------------;
 
-org 600h      ; Program origin of 600h
-bits 16       ; 16-bit programing
-cpu 8086      ; And assembling for the iAPX 8086 processor
-cli           ; Clear the interrupt flag, only non-maskable interrupts will be enabled
-xor ax, ax    ; Zero out accumulator
-mov ss, ax    ; Set the stack segment register
-mov sp, 7000h ; Set Stack Pointer
-push ax       ; Pushing AX 
-push ax       ; Pushing AX again
-pop es        ; And popping it into ES
-pop ds        ; and DS and setting them both to zero
-sti           ; Set the interrupts flag back one, now every single interrupt can interrupt my work
-cld           ; Default direction for string operations will be 'up', so incrementing adresses in RAM
-mov si, 7c00h ; Source, 7c00 since we are copying the entire MBR
-mov di, 0600h ; Destination, 600, since we are to relocate ourselves to not interfere with the loading of the VBR
-mov cx, 0ffh  ; Copy 256 word's (512 bytes), or in other word's, the entire bootsector. Nice pun, right?
-rep           ; Repeat the following movsw's CX times
-movsw         ; Move word at offset DS:SI to ES:DI
+org 600h                ; Program origin of 600h
+bits 16                 ; 16-bit programing
+cpu 8086                ; And assembling for the iAPX 8086 processor
+cli                     ; Clear the interrupt flag, only non-maskable interrupts will be enabled
+xor ax, ax              ; Zero out accumulator
+mov ss, ax              ; Set the stack segment register
+mov sp, 7000h           ; Set Stack Pointer
+push ax                 ; Pushing AX 
+push ax                 ; Pushing AX again
+pop es                  ; And popping it into ES
+pop ds                  ; and DS and setting them both to zero
+sti                     ; Set the interrupts flag back one, now every single interrupt can interrupt my work
+cld                     ; Default direction for string operations will be 'up', so incrementing adresses in RAM
+mov si, 7c00h           ; Source, 7c00 since we are copying the entire MBR
+mov di, 0600h           ; Destination, 600, since we are to relocate ourselves to not interfere with the loading of the VBR
+mov cx, 0ffh            ; Copy 256 word's (512 bytes), or in other word's, the entire bootsector. Nice pun, right?
+rep                     ; Repeat the following movsw's CX times
+movsw                   ; Move word at offset DS:SI to ES:DI
 
 jmp 0000h:relocated_code ; Jump to the relocated code
 
