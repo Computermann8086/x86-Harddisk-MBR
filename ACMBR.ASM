@@ -18,7 +18,7 @@ push ax       ; Pushing AX
 push ax       ; Pushing AX again
 pop es        ; And popping it into ES
 pop ds        ; and DS and setting them both to zero
-sti           ; Set the interrupts flag back one, now every single interrupt can interrupt my job
+sti           ; Set the interrupts flag back one, now every single interrupt can interrupt my work
 cld           ; Default direction for string operations will be 'up', so incrementing adresses in RAM
 mov si, 7c00h ; Source, 7c00 since we are copying the entire MBR
 mov di, 0600h ; Destination, 600, since we are to relocate ourselves to not interfere with the loading of the VBR
