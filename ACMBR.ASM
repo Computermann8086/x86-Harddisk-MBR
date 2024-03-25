@@ -24,7 +24,7 @@ mov si, 7c00h           ; Source, 7c00 since we are copying the entire MBR
 mov di, 0600h           ; Destination, 600, since we are to relocate ourselves to not interfere with the loading of the VBR
 mov cx, 0ffh            ; Copy 256 word's (512 bytes), or in other word's, the entire bootsector. Nice pun, right?
 rep                     ; Repeat the following movsw's CX times
-movsw                   ; Move word at offset DS:SI to ES:DI
+movsw                   ; Move word at offset DS:SI to ES:DI, used for moving strings between adresses, but in our case we use it to move the MBR
 
 jmp 0000h:relocated_code ; Jump to the relocated code
 
