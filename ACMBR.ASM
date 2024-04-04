@@ -48,7 +48,7 @@ active_found:            ; We found an active partition entry!
 .test_partbl:            ; Test the rest of the partition table
     add si, 10h          ; Add 16 to get to the next entry
     cmp byte [si], 00h   ; Is it zero?
-    jne short invalid_tbl      ; If not then there is an error
+    jne short invalid_tbl      ; If not then there is definitely something wrong here
     loop .test_partbl    ; Keep checking the rest if CX is not zero
     mov si, bp           ; Restoring SI because Partition table is clean, lets keep going.
 
