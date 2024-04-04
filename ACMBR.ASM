@@ -63,7 +63,6 @@ load_vbr:
                          ; Nope Calling
     xor ax, ax           ; Function 00h, reset drive
     int 13h              ; and passing control to int 13h to do my job for me
-    pop di               ; Restore DI
     dec di               ; Decrement DI
     jnz short load_vbr   ; Try again
     mov si, error_loading ; Loading failed, move location of loading error message into SI
