@@ -4,7 +4,11 @@
 ;            12.03.2024            ;
 ;           Copyright (C)          ;
 ;       Christian Henrichsen       ;
-;               2024               ; 
+;               2024               ;
+;                                  ;
+;     Copyright Notice Must be     ;
+; Included with All Copies of This ;
+;              Program             ;
 ;----------------------------------;
 
 org 600h                ; Program origin of 600h
