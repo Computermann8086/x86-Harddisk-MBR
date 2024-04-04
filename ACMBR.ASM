@@ -69,7 +69,7 @@ load_vbr:
     int 13h              ; and passing control to int 13h to do my job for me
     dec di               ; Decrement DI
     jnz short load_vbr   ; Try again
-    mov si, error_loading ; Loading failed, move location of loading error message into SI
+    mov si, error_loading ; Loading failed, move location of the loading error message into SI
     call print_string    ; Print the error message
                          ; And lock up the machine
 
