@@ -22,7 +22,7 @@ push ax                 ; Pushing AX
 push ax                 ; Pushing AX again
 pop es                  ; And popping it into ES
 pop ds                  ; and DS and setting them both to zero
-sti                     ; Set the interrupts flag back one, now every single interrupt can interrupt my work
+sti                     ; Set the interrupts flag back on, now every single interrupt can interrupt my work
 cld                     ; Default direction for string operations will be 'up', so incrementing adresses in RAM
 mov si, 7c00h           ; Source, 7c00 since we are copying the entire MBR
 mov di, 0600h           ; Destination, 600, since we are to relocate ourselves to not interfere with the loading of the VBR
@@ -34,14 +34,13 @@ jmp 0000h:relocated_code ; Jump to the relocated code
 
 relocated_code:
     mov cx, 3            ; Loop 4 times for each of the partition table entries
-    mov si, Par_tbl      ; loading the offset of the partition table into SI, 7BE
+    mov si, Par_tbl      ; loading the offset of the partition table into SI, which is 7BEh
 .find_active:
     cmp byte [si], 80h   ; Is it 80h?
     je active_found      ; Yes, then go check if there are any others marked as 'active'
     add si, 10h          ; No, add 16 to go to the next entry
     loop .find_active    ; Jump if CX is not zero to check again
     int 18h              ; No active partition, start ROM basic. Some or most BIOS'es will just display a 'Press any key to reboot' message
-                         ; If it continues to execute then it will stop here, and you will need to power down or CRTL-ALT-DEL
 
 active_found:            ; We found an active partition entry!
     mov bp, si           ; Save SI in BP for restoration later 
@@ -69,20 +68,20 @@ load_vbr:
     int 13h              ; and passing control to int 13h to do my job for me
     dec di               ; Decrement DI
     jnz short load_vbr   ; Try again
-    mov si, error_loading ; Loading failed, move location of the loading error message into SI
+    mov si, error_loading ; Loading failed, move the location of the loading-error message into SI
     call print_string    ; Print the error message
-                         ; And lock up the machine
+                         ; And hang the machine
 
 read_OK:                 ; Reading suceeded
     mov di, 7DFEh        ; Pointer to the end of or loaded VBR
-    cmp word [di], 0AA55h ; Check is the VBR bootable? Checking to see if the 2 last bytes are 55AAh
+    cmp word [di], 0AA55h ; Is the VBR bootable? Checking to see if the 2 last bytes are 55AAh
     je short bootable    ; Yes, the VBR is bootable
-    mov si, no_os        ; Nope, move loaction of error message. 'Missing OS!'
-    jmp short print_string ; Display string and hang the machine
+    mov si, no_os        ; Nope, move loaction of the error message. 'Missing OS!'
+    jmp short print_string ; Display message and hang the machine
 
 bootable:                ; Yez, it's bootable
     mov si, bp           ; SI = BP
-    jmp 0000h:7c00h      ; And do a far jump to our nice newly loaded VBR, we are pretending to be the BIOS
+    jmp 0000h:7c00h      ; And now we are performing a far jump to our nice newly loaded VBR, we are pretending to be the BIOS
     
 ;----------------
 ; MBR subroutines
